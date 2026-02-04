@@ -1,0 +1,27 @@
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: rgb(66, 69, 73);
+	font-family: 'Trebuchet MS';
+	color: rgb(200, 200, 200);
+}
+
+
+.button1 {
+	cursor: pointer;
+	border: none;
+	width: 500px;
+	font-size: 50px;
+	color: white;
+	background-color: rgb(40, 43, 48);
+	border-radius: 15px;
+}
+
+.button1:hover {
+	outline: 4px solid rgb(4, 255, 8);
+	background-color: rgb(40, 43, 48);
+	transition: background-color 150ms ease-in-out 0s;
+	transition: outline 150ms ease-in-out 0s;
+}
