@@ -1,17 +1,42 @@
 #include <Arduino.h>
-#include <Wifi.h>
+#include <WiFi.h>
 #include <SPIFFS.h>
 #include <ESPAsyncWebServer.h>
 
+
+enum LED {
+  WHITE = 15,
+  GREEN = 2,
+  RED = 4,
+  BLUE = 5
+};
+
+const int ledPins[] = {WHITE, GREEN, RED, BLUE};
 
 const char* ssid = "LIVING";
 const char* password = "CAEE22FF";
 const int port = 80;
 
-AsyncWebServer server(port);  // Changed from NetworkServer
+AsyncWebServer server(port);
+
+void setLED(int pin, bool state);
+void toggleLED(int pin);
+void handleInput(String input);
+
+void setupLEDPins() {
+
+  for (int pin : ledPins) {
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, LOW);
+  }
+
+}
 
 void setup() {
   Serial.begin(115200);
+
+  // Setup LED pin
+  setupLEDPins();
 
   Serial.printf("Connecting to: %s", ssid);
   WiFi.begin(ssid, password);
@@ -24,7 +49,7 @@ void setup() {
   // Initialize SPIFFS
   SPIFFS.begin(true);
 
-    // Serve static files from SPIFFS
+  // Serve static files from SPIFFS
   server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
 
   // Handle 404
@@ -32,24 +57,51 @@ void setup() {
     request->send(404, "text/plain", "Not found");
     });
 
+    // Handle button press command
+// Handle command endpoint
+  server.on("/command", HTTP_POST, [](AsyncWebServerRequest* request) {
+
+    String command = "";
+
+    // Extract the 'cmd' parameter from the URL query string
+    command = request->getParam("cmd")->value();
+
+    // Process the command
+    handleInput(command);
+
+    // Send success response
+    request->send(200, "text/plain", "Command '" + command + "' executed!");
+    });
+
     // Start server
   server.begin();
   Serial.println("\nHTTP Server Started!");
   Serial.print("WIFI CONNECTED: ");
   Serial.println(WiFi.localIP());
+}
 
-  server.begin();
+void setLED(int pin, bool state) {
+  digitalWrite(pin, state);
+}
+
+void toggleLED(int pin) {
+  digitalWrite(pin, !digitalRead(pin));
+}
+
+void handleInput(String input) {
+  if (input == "white") {
+    toggleLED(WHITE);
+  } else if (input == "green") {
+    toggleLED(GREEN);
+  } else if (input == "red") {
+    toggleLED(RED);
+  } else if (input == "blue") {
+    toggleLED(BLUE);
+  }
 }
 
 void loop() {
 
-  //nothing needed here for now
-
-  // WiFiClient client = server.available();
-
-
-  // if (client) {
-  //   Serial.println("New Client!")
-  // }
 }
+
 
