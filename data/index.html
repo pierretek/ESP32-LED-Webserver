@@ -6,16 +6,31 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="styles.css">
 	<script src="script.js"></script>
-	<title>Web Server</title>
+	<title>Fake Terminal</title>
 </head>
 
 <body>
-	<h1>Hello There BUDDY!</h1>
-	<button class="ctrlButton" id="button1">White</button>
-	<button class="ctrlButton" id="button2">Green</button>
-	<button class="ctrlButton" id="button3">Red</button>
-	<button class="ctrlButton" id="button4">Blue</button>
-	<p id="status"></p>
+
+	<h1 id="title">Cool Terminal Thing</h1>
+	<div id="terminal">
+
+		<div id="output"></div>
+		<input type="text" id="input" placeholder="Enter command here... " autofocus>
+
+	</div>
+
+
+	<details>
+		<summary>
+			ⓘ Information
+			<span class="icon">➤</span>
+		</summary>
+
+		<br>★ Press enter to send commands.
+		<br>★ Use up/down arrow keys to view command history.
+		<br>★ Send 'help' for a full list of commands.
+
+	</details>
 </body>
 
 </html>

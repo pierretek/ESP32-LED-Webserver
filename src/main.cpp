@@ -19,9 +19,11 @@ const int port = 80;
 
 AsyncWebServer server(port);
 
+//Forward declarations
 void setLED(int pin, bool state);
 void toggleLED(int pin);
-void handleInput(String input);
+String handleInput(String input);
+void handleRequest(AsyncWebServerRequest* request);
 
 void setupLEDPins() {
 
@@ -52,28 +54,10 @@ void setup() {
   // Serve static files from SPIFFS
   server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
 
-  // Handle 404
-  server.onNotFound([](AsyncWebServerRequest* request) {
-    request->send(404, "text/plain", "Not found");
-    });
+  // Handle command endpoint
+  server.on("/command", HTTP_POST, handleRequest);
 
-    // Handle button press command
-// Handle command endpoint
-  server.on("/command", HTTP_POST, [](AsyncWebServerRequest* request) {
-
-    String command = "";
-
-    // Extract the 'cmd' parameter from the URL query string
-    command = request->getParam("cmd")->value();
-
-    // Process the command
-    handleInput(command);
-
-    // Send success response
-    request->send(200, "text/plain", "Command '" + command + "' executed!");
-    });
-
-    // Start server
+  // Start server
   server.begin();
   Serial.println("\nHTTP Server Started!");
   Serial.print("WIFI CONNECTED: ");
@@ -88,7 +72,10 @@ void toggleLED(int pin) {
   digitalWrite(pin, !digitalRead(pin));
 }
 
-void handleInput(String input) {
+String handleInput(String input) {
+
+  String response{"Invalid Command, try \'help\' for a full list of commands."};
+
   if (input == "white") {
     toggleLED(WHITE);
   } else if (input == "green") {
@@ -98,10 +85,24 @@ void handleInput(String input) {
   } else if (input == "blue") {
     toggleLED(BLUE);
   }
+
+  return response;
+}
+
+void handleRequest(AsyncWebServerRequest* request) {
+  
+  String command = request->getParam("cmd")->value();
+  
+  Serial.printf("[REQUEST] Received command: '%s'\n", command.c_str());
+  
+  String response = handleInput(command);
+  
+  Serial.printf("[RESPONSE] %s\n", response);
+  
+  request->send(200, "text/plain", response);
 }
 
 void loop() {
-
+  //no need to use this loop lol
 }
-
 
