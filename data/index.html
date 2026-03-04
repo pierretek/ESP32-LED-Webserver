@@ -5,13 +5,26 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="styles.css">
+	<link rel="icon" type="image/png" href="favicon.png">
 	<script src="script.js"></script>
-	<title>Fake Terminal</title>
+	<title>LED Webserver</title>
 </head>
 
 <body>
 
-	<h1 id="title">Cool Terminal Thing</h1>
+	<!-- website name and logo -->
+	<div id="header">
+		<img src="favicon.png" alt="Logo">
+		<h1 id="title">ESP32 LED Webserver</h1>
+	</div>
+
+	<!-- connection status indicator -->
+	<div id="status">
+		<span id="status-dot"></span>
+		<span id="status-text">Connecting...</span>
+	</div>
+
+	<!-- actual terminal interface -->
 	<div id="terminal">
 
 		<div id="output"></div>
@@ -19,18 +32,37 @@
 
 	</div>
 
+	<!-- useful information section -->
+	<div id="info">
+		<details>
+			<summary>
+				ⓘ Information
+				<span class="icon">➤</span>
+			</summary>
 
-	<details>
-		<summary>
-			ⓘ Information
-			<span class="icon">➤</span>
-		</summary>
+			<br>★ Press enter to send commands.
+			<br>★ Use up/down arrow keys to view command history.
+			<br>★ Send 'help' for a full list of commands.
 
-		<br>★ Press enter to send commands.
-		<br>★ Use up/down arrow keys to view command history.
-		<br>★ Send 'help' for a full list of commands.
+		</details>
 
-	</details>
+		<details>
+			<summary>
+				Example Commands <br>
+				<span class="icon">➤</span>
+			</summary>
+
+			<div id="command-examples">
+				➜ led red 100ms<br>
+				➜ led blue 10s blink<br>
+				➜ led all 5<br>
+				➜ led all 2 blink<br>
+				➜ led all 1s pattern<br>
+			</div>
+
+		</details>
+
+	</div>
 </body>
 
 </html>

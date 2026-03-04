@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     input.addEventListener("keydown", function (e) {
 
 
+        //Sending input if user presses enter
         if (e.key === "Enter" && input.value != "") {
 
             const command = input.value;
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             historyIndex = -1;
             tempCommand = "";
 
+            // fetching previous command if user presses up
         } else if (e.key == "ArrowUp") {
 
             e.preventDefault();
@@ -43,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 input.value = commandHistory[historyIndex];
             }
 
+            // fetching next command if user presses down
         } else if (e.key == "ArrowDown") {
 
             e.preventDefault();
@@ -65,6 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 
+//Function to handle inputs
 function handleInput(command) {
 
     switch (command.toLowerCase()) {
@@ -73,12 +77,21 @@ function handleInput(command) {
             break;
 
         case "help":
+            output.innerHTML += "<div id=\"user\">> " + command + "<br></div>";
             output.innerHTML += helpCommand;
+            break;
+
+        case "github":
+            window.open('https://www.google.com', '_blank').focus();
+            break;
+
+        case "shutdown":
+            window.top.close();
             break;
 
         default:
             sendCommand(command);
-            output.innerHTML += "> " + command + "<br>";
+            output.innerHTML += "<div id=\"user\">> " + command + "<br></div>";
             break;
     }
 
@@ -101,16 +114,19 @@ const logoArt =
     " |_|                                            \n";
 
 const helpCommand =
-    "\nFull List of Commands: \n" +
-    "\'clear\' ➜ clears the terminal \n";
+    "Full List of Commands: \n" +
+    "\t<span class=\"command\">led &ltcolor|\"all\"&gt &ltduration&gt &lt\"blink\"|\"pattern\"&gt</span> ➜ controls the specified LEDs for a given duration \n" +
+    "\t<span class=\"command\">help</span> ➜ shows this menu \n" +
+    "\t<span class=\"command\">clear</span> ➜ clears the terminal \n" +
+    "\t<span class=\"command\">shutdown</span> ➜ closes the terminal \n" +
+    "\t<span class=\"command\">github</span> ➜ opens this project's github repo \n";
 
-
+//Function to send commands to the esp32
 async function sendCommand(command) {
 
     try {
-        const response = await fetch('/command?cmd=' + encodeURIComponent(command), {
-            method: 'POST'
-        });
+        const response = await fetch('/command?cmd=' + encodeURIComponent(command),
+            { method: 'GET' });
 
         const data = await response.text();
 
@@ -126,3 +142,25 @@ async function sendCommand(command) {
     }
 
 }
+
+
+//Function to detect whether the esp32 is connected by periodically sending watchdogs
+async function sendWatchDog() {
+    const setStatus = (connected) => {
+        document.getElementById('status-dot').className = connected ? 'connected' : 'disconnected';
+        document.getElementById('status-text').textContent = connected ? 'Connected' : 'Not Connected';
+    }
+
+    try {
+        await Promise.race([
+            fetch('/ping'),
+            new Promise((_, reject) => setTimeout(() => reject(), 2000))
+        ]);
+        setStatus(true);
+    } catch {
+        setStatus(false);
+    }
+}
+
+//Checks Connection every 1 seconds
+setInterval(sendWatchDog, 1000);

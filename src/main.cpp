@@ -2,45 +2,25 @@
 #include <WiFi.h>
 #include <SPIFFS.h>
 #include <ESPAsyncWebServer.h>
+#include "ledManager.h"
+#include "inputHandler.h"
 
+const char* ssid = "WIFI_NAME"; //CHANGE THIS
+const char* password = "WIFI_PASSWORD"; //CHANGE THIS
+const int port = 80; //no need to change
 
-enum LED {
-  WHITE = 15,
-  GREEN = 2,
-  RED = 4,
-  BLUE = 5
-};
-
-const int ledPins[] = {WHITE, GREEN, RED, BLUE};
-
-const char* ssid = "LIVING";
-const char* password = "CAEE22FF";
-const int port = 80;
+//ip address 
+IPAddress gateway(192, 168, 68, 1); //CHANGE THIS
+IPAddress subnet(255, 255, 255, 0); //CHANGE THIS
+IPAddress websiteIP(192, 168, 68, 180); //website's ip, no need to change
 
 AsyncWebServer server(port);
 
-//Forward declarations
-void setLED(int pin, bool state);
-void toggleLED(int pin);
-String handleInput(String input);
-void handleRequest(AsyncWebServerRequest* request);
-
-void setupLEDPins() {
-
-  for (int pin : ledPins) {
-    pinMode(pin, OUTPUT);
-    digitalWrite(pin, LOW);
-  }
-
-}
-
-void setup() {
-  Serial.begin(115200);
-
-  // Setup LED pin
-  setupLEDPins();
+//Function to set up and connect to WIFI
+void setupWIFI() {
 
   Serial.printf("Connecting to: %s", ssid);
+  WiFi.config(websiteIP, gateway, subnet);
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
@@ -48,61 +28,34 @@ void setup() {
     Serial.print(".");
   }
 
-  // Initialize SPIFFS
-  SPIFFS.begin(true);
-
-  // Serve static files from SPIFFS
-  server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
-
-  // Handle command endpoint
-  server.on("/command", HTTP_POST, handleRequest);
-
-  // Start server
-  server.begin();
-  Serial.println("\nHTTP Server Started!");
-  Serial.print("WIFI CONNECTED: ");
+  Serial.println("\nWIFI CONNECTED! ");
+  Serial.print("Connect to: ");
   Serial.println(WiFi.localIP());
 }
 
-void setLED(int pin, bool state) {
-  digitalWrite(pin, state);
+void setup() {
+  Serial.begin(115200);
+
+  // Setup LED pins and WIFI
+  setupLEDPins();
+  setupWIFI();
+
+  // Initialize storage
+  SPIFFS.begin();
+
+  //Serving the static website
+  server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
+
+  // Asynchronously handle incoming messages 
+  server.on("/command", HTTP_GET, handleCommand);
+  server.on("/ping", HTTP_GET, sendHeartBeat);
+
+  // Start server
+  server.begin();
 }
 
-void toggleLED(int pin) {
-  digitalWrite(pin, !digitalRead(pin));
-}
-
-String handleInput(String input) {
-
-  String response{"Invalid Command, try \'help\' for a full list of commands."};
-
-  if (input == "white") {
-    toggleLED(WHITE);
-  } else if (input == "green") {
-    toggleLED(GREEN);
-  } else if (input == "red") {
-    toggleLED(RED);
-  } else if (input == "blue") {
-    toggleLED(BLUE);
-  }
-
-  return response;
-}
-
-void handleRequest(AsyncWebServerRequest* request) {
-  
-  String command = request->getParam("cmd")->value();
-  
-  Serial.printf("[REQUEST] Received command: '%s'\n", command.c_str());
-  
-  String response = handleInput(command);
-  
-  Serial.printf("[RESPONSE] %s\n", response);
-  
-  request->send(200, "text/plain", response);
-}
-
+//Main Loop
 void loop() {
-  //no need to use this loop lol
+  updateLEDs();
 }
 
