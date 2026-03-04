@@ -156,7 +156,7 @@ async function sendWatchDog() {
             fetch('/ping'),
             new Promise((_, reject) => setTimeout(() => reject(), 2000))
         ]);
-        setStatus(true);
+        setStatus(response.ok);
     } catch {
         setStatus(false);
     }
