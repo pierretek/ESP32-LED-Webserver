@@ -82,7 +82,7 @@ function handleInput(command) {
             break;
 
         case "github":
-            window.open('https://www.google.com', '_blank').focus();
+            window.open('https://github.com/pierretek/ESP32-LED-Webserver', '_blank').focus();
             break;
 
         case "shutdown":
