@@ -83,10 +83,12 @@ function handleInput(command) {
 
         case "github":
             window.open('https://github.com/pierretek/ESP32-LED-Webserver', '_blank').focus();
+            output.innerHTML += "Sending to GitHub...\n";
             break;
 
         case "shutdown":
-            window.top.close();
+            output.innerHTML += "Bye Bye...\n";
+            window.location.href = "/";
             break;
 
         default:
@@ -115,11 +117,11 @@ const logoArt =
 
 const helpCommand =
     "Full List of Commands: \n" +
-    "\t<span class=\"command\">led &ltcolor|\"all\"&gt &ltduration&gt &lt\"blink\"|\"pattern\"&gt</span> ➜ controls the specified LEDs for a given duration \n" +
-    "\t<span class=\"command\">help</span> ➜ shows this menu \n" +
-    "\t<span class=\"command\">clear</span> ➜ clears the terminal \n" +
-    "\t<span class=\"command\">shutdown</span> ➜ closes the terminal \n" +
-    "\t<span class=\"command\">github</span> ➜ opens this project's github repo \n";
+    "- <span class=\"command\">led &ltcolor|\"all\"&gt &ltduration&gt &lt\"blink\"|\"pattern\"&gt</span> ➜ controls the specified LEDs for a given duration \n" +
+    "- <span class=\"command\">help</span> ➜ shows this menu \n" +
+    "- <span class=\"command\">clear</span> ➜ clears the terminal \n" +
+    "- <span class=\"command\">shutdown</span> ➜ closes the terminal \n" +
+    "- <span class=\"command\">github</span> ➜ opens this project's github repo \n";
 
 //Function to send commands to the esp32
 async function sendCommand(command) {
