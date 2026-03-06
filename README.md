@@ -1,5 +1,4 @@
-## ESP32 LED Webserver &nbsp; <span style="display:inline-block; vertical-align:middle;"><img src="data/favicon.png" width="40"></span>
-
+# ESP32 LED Webserver &nbsp; <img src="data/favicon.png" width="40" />
 An asynchronous webserver hosted on an ESP32 that controls an array of four LEDs using a browser based terminal interface
  
 ## Details 
