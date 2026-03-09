@@ -19,12 +19,17 @@ An asynchronous webserver hosted on an ESP32 that controls an array of four LEDs
 - VS Code with the platformIO extension
 
 ## How to Use
-1. Import the project folder in VS Code with platformIO (platformio.ini must be in root)
-2. Navigate to `src/main.cpp` and fill in your WIFI details (lines 8-13)
-3. From the plugins bar, navigate to `PlatformIO > Upload Filesystem Image`, and run it to upload the website to the esp32
-4. Connect your ESP32 via USB and upload the project
-5. Open the serial monitor and connect to the IP mentioned using your browser
-6. Send commands via the terminal interface and enjoy! 
+1. Build the simple circuit below:
+<p align="center">
+  <img width="500" alt="circuit-schematic" src="https://github.com/user-attachments/assets/5e363a8a-1a8d-4217-ac6b-e683f536464c" />
+</p>
+
+3. Import the project folder in **VS Code** with **platformIO** (platformio.ini must be in root)
+4. Navigate to `src/main.cpp` and fill in your WIFI details (lines 8-13)
+5. From the plugins bar, navigate to `PlatformIO > Upload Filesystem Image`, and run it to upload the website to the esp32
+6. Connect your ESP32 via USB and upload the project
+7. Open the serial monitor and connect to the IP mentioned using your browser
+8. Send commands via the terminal interface and enjoy! 
 
 ## Possible Commands
 `led red 100ms` ⇒ Turns on red LED for 100ms <br>
