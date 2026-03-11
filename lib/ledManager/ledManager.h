@@ -5,10 +5,10 @@
 
 //Pairing each LED color to their physical pin
 enum LEDPins {
-	WHITE = 15,
+	WHITE = 5,
 	GREEN = 2,
-	RED = 4,
-	BLUE = 5,
+	RED = 15,
+	BLUE = 4,
 	ALL = 0
 };
 
@@ -32,7 +32,7 @@ inline std::map<int, LED> leds = {
 };
 
 //Actual order of the LEDs
-inline std::vector<int> ledOrder = {WHITE, GREEN, RED, BLUE};
+inline std::vector<int> ledOrder = {WHITE, BLUE, GREEN, RED};
 
 //Forward declarations (ledManager.cpp)
 void setupLEDPins();
