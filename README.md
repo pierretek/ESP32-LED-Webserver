@@ -33,11 +33,13 @@ An asynchronous webserver hosted on an ESP32 that controls an array of four LEDs
 7. Send commands via the terminal interface and enjoy! 
 
 ## Possible Commands
-`led red 100ms` ⇒ Turns on red LED for 100ms <br>
-`led blue 10s blink` ⇒ Repeatedly blinks blue LED every 10s<br>
-`led all 5` ⇒ Turns on all LEDs for 5s <br>
-`led all 2 blink` ⇒ Repeatedly blinks all LEDs every 2s<br>
-`led all 1s pattern` ⇒ Blinks the LEDs  a staggered offset pattern every 1s <br>
+```
+led red 100ms ⇒ Turns on red LED for 100ms 
+led blue 10s blink ⇒ Repeatedly blinks blue LED every 10s
+led all 5 ⇒ Turns on all LEDs for 5s 
+led all 2 blink ⇒ Repeatedly blinks all LEDs every 2s
+led all 1s pattern ⇒ Blinks the LEDs  a staggered offset pattern every 1s
+```
 
 ## Bonus
 Although **completely** redundant and unnecessary, I also decided to make a simple PCB for fun and to free up my breadboard for other projects. I made the PCB in KiCAD and the project files can be found under `PCBFiles/`.
