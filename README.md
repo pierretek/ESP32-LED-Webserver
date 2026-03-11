@@ -16,7 +16,7 @@ An asynchronous webserver hosted on an ESP32 that controls an array of four LEDs
 - Four `220Ω` resistors
 - Breadboard and connector wires
 ### Software
-- VS Code with the platformIO extensiona
+- VS Code with the platformIO extension
 
 ## How to Use
 1. Build the simple circuit below with the components listed above:
