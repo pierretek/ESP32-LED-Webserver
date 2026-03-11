@@ -16,7 +16,7 @@ An asynchronous webserver hosted on an ESP32 that controls an array of four LEDs
 - Four `220Ω` resistors
 - Breadboard and connector wires
 ### Software
-- VS Code with the platformIO extension
+- VS Code with the platformIO extensiona
 
 ## How to Use
 1. Build the simple circuit below with the components listed above:
@@ -39,8 +39,19 @@ An asynchronous webserver hosted on an ESP32 that controls an array of four LEDs
 `led all 2 blink` ⇒ Repeatedly blinks all LEDs every 2s<br>
 `led all 1s pattern` ⇒ Blinks the LEDs  a staggered offset pattern every 1s <br>
 
----
+## Bonus
+Although **completely** redundant and unnecessary, I also decided to make a simple PCB for fun and to free up my breadboard for other projects. I made the PCB in KiCAD and the project files can be found under `PCBFiles/`.
 
-###### thanks for reading
+### PCB Photos
+<p align="center">
+ <img src="https://github.com/user-attachments/assets/bb7921db-510c-4cec-9f63-857a1681a962" width="45%">
+ <img src="https://github.com/user-attachments/assets/5c97f0a2-8817-4091-b2bf-864ba20aea4a" width="45%">
+</p>
+
+### Demo with PCB
+https://github.com/user-attachments/assets/332d59a1-b7c1-4675-94df-a39690c8915f
+
+---
+_thanks for reading_
 
 
